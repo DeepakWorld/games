@@ -1,21 +1,47 @@
-<!DOCTYPE html>
-<html lang="en">
+<html>
 <head>
-  <meta charset="UTF-8">
-  <meta http-equiv="X-UA-Compatible" content="IE=edge">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <meta name="title" content="Ruffle Example">
-  <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
-  <meta name="language" content="English">
-  <title>Ruffle Example</title>
-  <script src="main.js"></script>
-  <noscript>Your browser doesn't have JavaScript enabled. Please enable JavaScript or switch to a browser that
-    supports it.</noscript>
+
+
+    <meta content="width=device-width, initial-scale=1" name="viewport"/>
+    <title>Atlantis</title>
+    <link href="../../images/ico.ico" rel="shortcut icon" type="image/x-icon">
+    <script src="../../storage/js/cloak.js"></script>
+
+    <style>
+        body {
+            margin: 0;
+            padding: 0;
+            background-color: black;
+        }
+    </style>
 </head>
 <body>
-<div id='ruffle' class="gameloc"></div>
-<script src="https://unpkg.com/@ruffle-rs/ruffle"></script>
-<script id = "gabe">swfobject.embedSWF("game.swf", 'ruffle', 800, 600);</script>
+<script>
+    function loadLocalRuffle() {
+        var script = document.createElement('script');
+        script.src = '../../storage/ruffle/ruffle.js';
+        document.body.appendChild(script);
+    }
+
+    var cdnScript = document.createElement('script');
+    cdnScript.src = 'https://unpkg.com/@ruffle-rs/ruffle';
+    cdnScript.onerror = loadLocalRuffle;
+    document.body.appendChild(cdnScript);
+</script>
+
+<div height="100%" id="ruffle" width="100%"></div>
+<script>
+    window.RufflePlayer = window.RufflePlayer || {};
+    window.addEventListener("load", (event) => {
+        const ruffle = window.RufflePlayer.newest();
+        const player = ruffle.createPlayer();
+        const container = document.getElementById("ruffle");
+        player.id = "player";
+        player.style.width = "100%";
+        player.style.height = "100%";
+        container.appendChild(player);
+        player.load("game.swf");
+    });
+</script>
 </body>
 </html>
-
