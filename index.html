@@ -82,13 +82,15 @@
 
         <h2 class="allgames-header"></h2>
         <div class="button-container">
-            <a target="_blank" href="atlantis/game.swf">
+            <div id='ruffle' class="gameloc"></div>
+<script src="https://unpkg.com/@ruffle-rs/ruffle"></script>
+<script id = "gabe">swfobject.embedSWF("atlantis/game.swf", 'ruffle', 800, 600);</script>
                 <div class="button" style="background-image: url('images/thumbnails/slope.jpg');" data-genre="platformer">
                     <h2>slope</h2>
                     <span class="pin-button"><img src="/images/other/star.png" width="25px" height="25px"></span>
                     <span class="download-button"><img src="/images/other/download.png" width="25px" height="25px"></span>
                 </div>
-            </a>
+          
 
             <a target="_blank" href="baccarat/game.swf">
                 <div class="button" style="background-image: url('images/thumbnails/subwaysurfers.jpeg');" data-genre="platformer">
