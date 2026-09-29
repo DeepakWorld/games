@@ -1,459 +1,591 @@
-<!DOCTYPE html>
 <html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Deepak Arcade Hub - Casino & Action Games</title>
-    <style>
-        :root {
-            --bg-color: #0f172a;
-            --surface-color: #1e293b;
-            --surface-hover: #334155;
-            --accent-color: #f59e0b;
-            --accent-gradient: linear-gradient(135deg, #f59e0b 0%, #ef4444 100%);
-            --text-primary: #f8fafc;
-            --text-secondary: #94a3b8;
-            --border-color: #334155;
-        }
+    <head>
+        <script async src="https://www.googletagmanager.com/gtag/js?id=G-7FN7LEVWXD"></script>
+        <script>
+          window.dataLayer = window.dataLayer || [];
+          function gtag(){dataLayer.push(arguments);}
+          gtag('js', new Date());
 
-        [data-theme="light"] {
-            --bg-color: #f1f5f9;
-            --surface-color: #ffffff;
-            --surface-hover: #e2e8f0;
-            --accent-color: #d97706;
-            --accent-gradient: linear-gradient(135deg, #d97706 0%, #dc2626 100%);
-            --text-primary: #0f172a;
-            --text-secondary: #64748b;
-            --border-color: #cbd5e1;
-        }
+          gtag('config', 'G-7FN7LEVWXD');
+        </script>
 
-        * {
-            box-sizing: border-box;
-            margin: 0;
-            padding: 0;
-            font-family: 'Segoe UI', system-ui, -apple-system, sans-serif;
-            transition: background-color 0.3s, color 0.3s;
-        }
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <link rel="shortcut icon" href="images/ico.ico" type="image/x-icon">
+        <link rel="stylesheet" href="/storage/css/games.css">
+        <title>Games | Play</title>
 
-        body {
-            background-color: var(--bg-color);
-            color: var(--text-primary);
-            min-height: 100vh;
-            display: flex;
-            flex-direction: column;
-        }
+        <meta name="description" content="an open source games site hosting 500+ games, useful utilities, powerful settings + a clean user interface">
+        <meta property="og:site_name" content="game">
+        <meta property="og:title" content="game">
+        <meta property="og:type" content="website">
+        <meta property="og:description" content="an open source games site hosting 500+ games, useful utilities, powerful settings + a clean user interface">
 
-        header {
-            background-color: var(--surface-color);
-            border-bottom: 1px solid var(--border-color);
-            padding: 1rem 2rem;
-            display: flex;
-            flex-wrap: wrap;
-            align-items: center;
-            justify-content: space-between;
-            gap: 1rem;
-            position: sticky;
-            top: 0;
-            z-index: 100;
-            box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
-        }
-
-        .logo-area {
-            display: flex;
-            align-items: center;
-            gap: 0.75rem;
-        }
-
-        .logo-icon {
-            font-size: 2rem;
-        }
-
-        .logo-text h1 {
-            font-size: 1.5rem;
-            font-weight: 800;
-            background: var(--accent-gradient);
-            -webkit-background-clip: text;
-            -webkit-text-fill-color: transparent;
-        }
-
-        .logo-text p {
-            font-size: 0.85rem;
-            color: var(--text-secondary);
-        }
-
-        .search-container {
-            flex: 1;
-            max-width: 500px;
-            position: relative;
-        }
-
-        .search-input {
-            width: 100%;
-            padding: 0.75rem 1rem 0.75rem 2.75rem;
-            border-radius: 9999px;
-            border: 1px solid var(--border-color);
-            background-color: var(--bg-color);
-            color: var(--text-primary);
-            font-size: 1rem;
-            outline: none;
-        }
-
-        .search-input:focus {
-            border-color: var(--accent-color);
-            box-shadow: 0 0 0 3px rgba(245, 158, 11, 0.2);
-        }
-
-        .search-icon {
-            position: absolute;
-            left: 1rem;
-            top: 50%;
-            transform: translateY(-50%);
-            color: var(--text-secondary);
-        }
-
-        .header-actions {
-            display: flex;
-            align-items: center;
-            gap: 1rem;
-        }
-
-        .btn {
-            background: var(--surface-hover);
-            color: var(--text-primary);
-            border: 1px solid var(--border-color);
-            padding: 0.6rem 1.2rem;
-            border-radius: 8px;
-            cursor: pointer;
-            font-weight: 600;
-            display: inline-flex;
-            align-items: center;
-            gap: 0.5rem;
-            text-decoration: none;
-        }
-
-        .btn:hover {
-            border-color: var(--accent-color);
-        }
-
-        .theme-toggle {
-            background: none;
-            border: 1px solid var(--border-color);
-            color: var(--text-primary);
-            width: 40px;
-            height: 40px;
-            border-radius: 50%;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            cursor: pointer;
-            font-size: 1.2rem;
-        }
-
-        main {
-            flex: 1;
-            max-width: 1400px;
-            width: 100%;
-            margin: 0 auto;
-            padding: 2rem;
-        }
-
-        .stats-bar {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            margin-bottom: 1.5rem;
-            color: var(--text-secondary);
-            font-size: 0.95rem;
-        }
-
-        .categories-filter {
-            display: flex;
-            gap: 0.5rem;
-            overflow-x: auto;
-            padding-bottom: 0.5rem;
-            margin-bottom: 2rem;
-            scrollbar-width: thin;
-        }
-
-        .category-chip {
-            background-color: var(--surface-color);
-            border: 1px solid var(--border-color);
-            color: var(--text-secondary);
-            padding: 0.5rem 1rem;
-            border-radius: 9999px;
-            cursor: pointer;
-            white-space: nowrap;
-            font-weight: 500;
-            font-size: 0.9rem;
-        }
-
-        .category-chip.active, .category-chip:hover {
-            background: var(--accent-gradient);
-            color: white;
-            border-color: transparent;
-        }
-
-        .games-grid {
-            display: grid;
-            grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
-            gap: 1.5rem;
-        }
-
-        .game-card {
-            background-color: var(--surface-color);
-            border: 1px solid var(--border-color);
-            border-radius: 12px;
-            padding: 1.25rem;
-            display: flex;
-            flex-direction: column;
-            justify-content: space-between;
-            position: relative;
-            cursor: pointer;
-            transition: transform 0.2s, box-shadow 0.2s, border-color 0.2s;
-            text-decoration: none;
-        }
-
-        .game-card:hover {
-            transform: translateY(-4px);
-            box-shadow: 0 10px 20px -5px rgba(0, 0, 0, 0.3);
-            border-color: var(--accent-color);
-        }
-
-        .game-info h3 {
-            font-size: 1.05rem;
-            font-weight: 700;
-            color: var(--text-primary);
-            margin-bottom: 0.5rem;
-            word-break: break-word;
-        }
-
-        .game-meta {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            margin-top: 1rem;
-        }
-
-        .game-badge {
-            font-size: 0.75rem;
-            background-color: var(--surface-hover);
-            color: var(--text-secondary);
-            padding: 0.25rem 0.5rem;
-            border-radius: 4px;
-            text-transform: uppercase;
-        }
-
-        .fav-btn {
-            background: none;
-            border: none;
-            color: var(--text-secondary);
-            font-size: 1.2rem;
-            cursor: pointer;
-            padding: 0.25rem;
-        }
-
-        .fav-btn.active {
-            color: #f43f5e;
-        }
-
-        .no-results {
-            grid-column: 1 / -1;
-            text-align: center;
-            padding: 4rem;
-            color: var(--text-secondary);
-            font-size: 1.2rem;
-        }
-
-        footer {
-            text-align: center;
-            padding: 2rem;
-            border-top: 1px solid var(--border-color);
-            color: var(--text-secondary);
-            font-size: 0.9rem;
-            background-color: var(--surface-color);
-            margin-top: auto;
-        }
-
-        @media (max-width: 768px) {
-            header {
-                flex-direction: column;
-                align-items: stretch;
+        <style>
+            .pinned-container {
+                display: flex;
+                flex-wrap: wrap;
+                justify-content: center;
             }
-            .search-container {
-                max-width: 100%;
+
+            .pin-button {
+                position: absolute;
+                top: 5px;
+                right: 5px;
+                z-index: 2;
             }
-        }
-    </style>
-</head>
-<body data-theme="dark">
 
-    <header>
-        <div class="logo-area">
-            <span class="logo-icon">🎰</span>
-            <div class="logo-text">
-                <h1>Deepak Arcade</h1>
-                <p>Slots, Table & Arcade Games Hub</p>
-            </div>
+            .button {
+                position: relative;
+                background-size: cover;
+                background-position: center;
+            }
+        </style>
+
+        <script>
+            if ('serviceWorker' in navigator) {
+                window.addEventListener('load', function() {
+                    navigator.serviceWorker.register('/offline-worker.js').then(function(registration) {
+                        console.log('service worker initalised! scope:', registration.scope);
+
+                        navigator.serviceWorker.addEventListener('message', function(event) {
+                            if (event.data === 'cached') {
+                                document.getElementById('cache-status').style.display = 'block';
+                            }
+                        });
+                    }, function(error) {
+                        console.log('ack, error with serviceworker! ', error);
+                    });
+                });
+            }
+        </script>
+  </head>
+  <body>
+
+        <h1 class="typewriter"><span id="cursor"></span></h1>
+
+        <input type="text" id="search" placeholder="⌕ search" autocomplete="off">
+        <select id="genreDropdown" style="margin-top: 5px; margin-left: 5px;">
+            <option value="all">all</option>
+            <option value="adventure">adventure</option>
+            <option value="arcade">arcade</option>
+            <option value="mobile">mobile friendly</option>
+            <option value="platformer">platformer</option>
+            <option value="puzzle">puzzle</option>
+            <option value="simulation">simulation</option>
+        </select>
+
+       <p class="linkp"> • <a href="https://deepakworld.github.io" target="_blank">Home</a>• <a href="https://deepakrummy.github.io/game/" target="_blank">Wow Games</a>• <a href="https://deepakworld.github.io" target="_blank">Music</a> • <a href="https://deepakplay.web.app/" target="_blank">Ace Card</a> • <a href="https://deepakstorm.web.app" target="_blank">Deepak Profile</a></p>
+
+
+        <br>
+        <h2 class="pinned-header">starred games</h2>
+        <div class="pinned-container">
+
         </div>
-        <div class="search-container">
-            <span class="search-icon">🔍</span>
-            <input type="text" id="searchInput" class="search-input" placeholder="Search games...">
-        </div>
-        <div class="header-actions">
-            <button class="btn" id="favFilterBtn">⭐ Favorites (<span id="favCount">0</span>)</button>
-            <button class="theme-toggle" id="themeToggle" title="Toggle Theme">☀️</button>
-        </div>
-    </header>
 
-    <main>
-        <div class="stats-bar">
-            <span id="gameCounter">Loading games...</span>
-            <span>Click any game to launch offline instantly</span>
-        </div>
+        <h2 class="allgames-header"></h2>
+        <div class="button-container">
+            <a target="_blank" href="3d_soccer_slot/index.html">
+                <div class="button" style="background-image: url('images/thumbnails/thebindingofisaac.jpg');" data-genre="arcade">
+                    <h2>3d_soccer_slot</h2>
+                    <span class="pin-button"><img src="images/other/star.png" width="25px" height="25px"></span>
+                </div>
+            </a>
 
-        <div class="categories-filter" id="categoriesFilter">
-            <button class="category-chip active" data-category="all">All Games</button>
-            <button class="category-chip" data-category="cards">Cards & Casino</button>
-            <button class="category-chip" data-category="slots">Slots & Dice</button>
-            <button class="category-chip" data-category="sports">Sports & Pool</button>
-            <button class="category-chip" data-category="action">Action & Rush</button>
-            <button class="category-chip" data-category="puzzle">Puzzle & Words</button>
-        </div>
+            <a target="_blank" href="8_ball_pool_c2/index.html">
+                <div class="button" style="background-image: url('images/thumbnails/subwaysurfers.jpeg');" data-genre="arcade">
+                    <h2>8_ball_pool_c2</h2>
+                    <span class="pin-button"><img src="images/other/star.png" width="25px" height="25px"></span>
+                </div>
+            </a>
 
-        <div class="games-grid" id="gamesGrid"></div>
-    </main>
+            <a target="_blank" href="american_football_kicks/index.html">
+                <div class="button" style="background-image: url('images/thumbnails/flappybird.jpg');" data-genre="arcade">
+                    <h2>american_football_kicks</h2>
+                    <span class="pin-button"><img src="images/other/star.png" width="25px" height="25px"></span>
+                </div>
+            </a>
 
-    <footer>
-        <p>&copy; 2026 Deepak IT & Web Services. Hosted on GitHub Pages.</p>
-    </footer>
+            <a target="_blank" href="arcade_golf/index.html">
+                <div class="button" style="background-image: url('images/thumbnails/papaspizzeria.jpg');" data-genre="arcade">
+                    <h2>arcade_golf</h2>
+                    <span class="pin-button"><img src="images/other/star.png" width="25px" height="25px"></span>
+                </div>
+            </a>
 
-    <script>
-        const rawFolders = [
-            "3d_soccer_slot", "8_ball_pool_c2", "american_football_kicks", "arcade_golf", "atlantis", 
-            "baccarat", "black_jack_diamond", "black_jack_gold", "black_jack_silver", "candies", 
-            "captaincavern", "cartoons", "corona", "crazydoctors", "dartagnan", "davinci", 
-            "devils_bikers", "dracula", "gladiator", "grizzly", "happy_christmas", "happy_farm", 
-            "images", "indiana_croft", "jacks_or_better", "james_band", "joker_poker", "jules_verne", 
-            "jungle_jimmy", "jurassic_world", "just_married", "lasvegas", "liberty_bell", "london", 
-            "lucky_luke", "luna_park", "mafia_boss", "mah_jong", "marilyn", "mont_blanc", "navy", 
-            "new_year_eve", "new_york", "numbers", "pantheon", "paris", "real_tennis", "red_dog", 
-            "roulette_royale", "roulette_silver", "royal_fruit", "rue_commerce", "safari", 
-            "sergent_pepper", "shinobi", "ski_rush", "small_life", "snake_attack", "soap_ball_craze_c2", 
-            "space_runners", "speed_rush_c2", "super_heroes", "swing_jetpack", "tap_the_tile_c2", 
-            "the_bandit_hunter_c2", "tokyo", "virus_attack", "word_finder", "world_cup", "zap_aliens", "zorro"
-        ];
+            <a target="_blank" href="atlantis/index.html">
+                <div class="button" style="background-image: url('images/thumbnails/thebindingofisaac.jpg');" data-genre="adventure">
+                    <h2>Atlantis</h2>
+                    <span class="pin-button"><img src="images/other/star.png" width="25px" height="25px"></span>
+                    <span class="download-button"><img src="images/other/download.png" width="25px" height="25px"></span>
+                </div>
+            </a>
 
-        let favorites = JSON.parse(localStorage.getItem('arcade_favorites')) || [];
-        let currentCategory = 'all';
-        let showOnlyFavs = false;
+            <a target="_blank" href="baccarat/index.html">
+                <div class="button" style="background-image: url('images/thumbnails/subwaysurfers.jpeg');" data-genre="platformer">
+                    <h2>baccarat</h2>
+                    <span class="pin-button"><img src="images/other/star.png" width="25px" height="25px"></span>
+                </div>
+            </a>
 
-        function formatGameName(folder) {
-            return folder
-                .replace(/([A-Z])/g, ' $1')
-                .replace(/[-_]/g, ' ')
-                .replace(/\b\w/g, c => c.toUpperCase())
-                .trim();
-        }
+            <a target="_blank" href="black_jack_diamond/index.html">
+                <div class="button" style="background-image: url('images/thumbnails/flappybird.jpg');" data-genre="mobile">
+                    <h2>black_jack_diamond</h2>
+                    <span class="pin-button"><img src="images/other/star.png" width="25px" height="25px"></span>
+                </div>
+            </a>
 
-        function getCategory(folder) {
-            const f = folder.toLowerCase();
-            if (f.includes('blackjack') || f.includes('baccarat') || f.includes('poker') || f.includes('mah_jong') || f.includes('cards')) return 'cards';
-            if (f.includes('slot') || f.includes('roulette') || f.includes('fruit') || f.includes('bell') || f.includes('lasvegas')) return 'slots';
-            if (f.includes('soccer') || f.includes('pool') || f.includes('football') || f.includes('golf') || f.includes('tennis') || f.includes('world_cup')) return 'sports';
-            if (f.includes('rush') || f.includes('attack') || f.includes('hunter') || f.includes('runners') || f.includes('shinobi') || f.includes('heroes')) return 'action';
-            if (f.includes('word') || f.includes('numbers') || f.includes('small_life')) return 'puzzle';
-            return 'slots';
-        }
+            <a target="_blank" href="black_jack_gold/index.html">
+                <div class="button" style="background-image: url('images/thumbnails/papaspizzeria.jpg');" data-genre="simulation">
+                    <h2>black_jack_gold</h2>
+                    <span class="pin-button"><img src="images/other/star.png" width="25px" height="25px"></span>
+                    <span class="download-button"><img src="images/other/download.png" width="25px" height="25px"></span>
+                </div>
+            </a>
 
-        const games = rawFolders.map(folder => ({
-            folder: folder,
-            name: formatGameName(folder),
-            category: getCategory(folder)
-        }));
+            <a target="_blank" href="black_jack_silver/index.html">
+                <div class="button" style="background-image: url('images/thumbnails/papasburgeria.jpg');" data-genre="simulation">
+                    <h2>black_jack_silver</h2>
+                    <span class="pin-button"><img src="images/other/star.png" width="25px" height="25px"></span>
+                    <span class="download-button"><img src="images/other/download.png" width="25px" height="25px"></span>
+                </div>
+            </a>
 
-        const grid = document.getElementById('gamesGrid');
-        const searchInput = document.getElementById('searchInput');
-        const gameCounter = document.getElementById('gameCounter');
-        const favCountSpan = document.getElementById('favCount');
-        const favFilterBtn = document.getElementById('favFilterBtn');
+            <a target="_blank" href="candies/index.html">
+                <div class="button" style="background-image: url('images/thumbnails/sm64.jpg');" data-genre="platformer">
+                    <h2>candies</h2>
+                    <span class="pin-button"><img src="images/other/star.png" width="25px" height="25px"></span>
+                    <span class="download-button"><img src="images/other/download.png" width="25px" height="25px"></span>
+                </div>
+            </a>
 
-        function renderGames() {
-            const searchTerm = searchInput.value.toLowerCase().trim();
+            <a target="_blank" href="captaincavern/index.html">
+                <div class="button" style="background-image: url('images/thumbnails/run3.jpg');" data-genre="platformer">
+                    <h2>captaincavern</h2>
+                    <span class="pin-button"><img src="images/other/star.png" width="25px" height="25px"></span>
+                    <span class="download-button"><img src="images/other/download.png" width="25px" height="25px"></span>
+                </div>
+            </a>
+
+            <a target="_blank" href="cartoons/index.html">
+                <div class="button" style="background-image: url('images/thumbnails/bitlife.jpg');" data-genre="simulation">
+                    <h2>cartoons</h2>
+                    <span class="pin-button"><img src="images/other/star.png" width="25px" height="25px"></span>
+                    <span class="download-button"><img src="images/other/download.png" width="25px" height="25px"></span>
+                </div>
+            </a>
+
+            <a target="_blank" href="corona/index.html">
+                <div class="button" style="background-image: url('images/thumbnails/crossyroad.jpg');" data-genre="mobile">
+                    <h2>corona</h2>
+                    <span class="pin-button"><img src="images/other/star.png" width="25px" height="25px"></span>
+                </div>
+            </a>
+
+            <a target="_blank" href="crazydoctors/index.html">
+                <div class="button" style="background-image: url('images/thumbnails/mc.jpg');" data-genre="simulation">
+                    <h2>crazydoctors</h2>
+                    <span class="pin-button"><img src="images/other/star.png" width="25px" height="25px"></span>
+                    <span class="download-button"><img src="images/other/download.png" width="25px" height="25px"></span>
+                </div>
+            </a>
+
+            <a target="_blank" href="dartagnan/index.html">
+                <div class="button" style="background-image: url('images/thumbnails/cookieclick.jpg');" data-genre="arcade">
+                    <h2>dartagnan</h2>
+                    <span class="pin-button"><img src="images/other/star.png" width="25px" height="25px"></span>
+                </div>
+            </a>
+
+            <a target="_blank" href="davinci/index.html">
+                <div class="button" style="background-image: url('images/thumbnails/templerun2.jpg');" data-genre="platformer">
+                    <h2>davinci</h2>
+                    <span class="pin-button"><img src="images/other/star.png" width="25px" height="25px"></span>
+                </div>
+            </a>
+
+            <a target="_blank" href="devils_bikers/index.html">
+                <div class="button" style="background-image: url('images/thumbnails/ducklife4.jpg');" data-genre="simulation">
+                    <h2>devils_bikers</h2>
+                    <span class="pin-button"><img src="images/other/star.png" width="25px" height="25px"></span>
+                    <span class="download-button"><img src="images/other/download.png" width="25px" height="25px"></span>
+                </div>
+            </a>
+
+            <a target="_blank" href="dracula/index.html">
+                <div class="button" style="background-image: url('images/thumbnails/chromedino.jpg');" data-genre="arcade">
+                    <h2>dracula</h2>
+                    <span class="pin-button"><img src="images/other/star.png" width="25px" height="25px"></span>
+                    <span class="download-button"><img src="images/other/download.png" width="25px" height="25px"></span>
+                </div>
+            </a>
+
+            <a target="_blank" href="gladiator/index.html">
+                <div class="button" style="background-image: url('images/thumbnails/jetpackjoyride.jpg');" data-genre="arcade">
+                    <h2>gladiator</h2>
+                    <span class="pin-button"><img src="images/other/star.png" width="25px" height="25px"></span>
+                    <span class="download-button"><img src="images/other/download.png" width="25px" height="25px"></span>
+                </div>
+            </a>
+
+            <a target="_blank" href="grizzly/index.html">
+                <div class="button" style="background-image: url('images/thumbnails/retrobowl.jpg');" data-genre="arcade">
+                    <h2>grizzly</h2>
+                    <span class="pin-button"><img src="images/other/star.png" width="25px" height="25px"></span>
+                </div>
+            </a>
+
+            <a target="_blank" href="happy_christmas/index.html">
+                <div class="button" style="background-image: url('images/thumbnails/fruitninja.jpg');" data-genre="arcade">
+                    <h2>happy_christmas</h2>
+                    <span class="pin-button"><img src="images/other/star.png" width="25px" height="25px"></span>
+                </div>
+            </a>
+
+            <a target="_blank" href="happy_farm/index.html">
+                <div class="button" style="background-image: url('images/thumbnails/doodlejump.jpg');" data-genre="platformer">
+                    <h2>happy_farm</h2>
+                    <span class="pin-button"><img src="images/other/star.png" width="25px" height="25px"></span>
+                </div>
+            </a>
+
+            <a target="_blank" href="indiana_croft/index.html">
+                <div class="button" style="background-image: url('images/thumbnails/2048.jpg');" data-genre="puzzle">
+                    <h2>indiana_croft</h2>
+                    <span class="pin-button"><img src="images/other/star.png" width="25px" height="25px"></span>
+                    <span class="download-button"><img src="images/other/download.png" width="25px" height="25px"></span>
+                </div>
+            </a>
+
+            <a target="_blank" href="jacks_or_better/index.html">
+                <div class="button" style="background-image: url('images/thumbnails/tetris.jpg');" data-genre="puzzle">
+                    <h2>jacks_or_better</h2>
+                    <span class="pin-button"><img src="images/other/star.png" width="25px" height="25px"></span>
+                </div>
+            </a>
+
+            <a target="_blank" href="james_band/index.html">
+                <div class="button" style="background-image: url('images/thumbnails/fancypantsadventure.jpg');" data-genre="platformer">
+                    <h2>james_band</h2>
+                    <span class="pin-button"><img src="images/other/star.png" width="25px" height="25px"></span>
+                    <span class="download-button"><img src="images/other/download.png" width="25px" height="25px"></span>
+                </div>
+            </a>
+
+            <a target="_blank" href="joker_poker/index.html">
+                <div class="button" style="background-image: url('images/thumbnails/happywheels.jpg');" data-genre="arcade">
+                    <h2>joker_poker</h2>
+                    <span class="pin-button"><img src="images/other/star.png" width="25px" height="25px"></span>
+                </div>
+            </a>
+
+            <a target="_blank" href="jules_verne/index.html">
+                <div class="button" style="background-image: url('images/thumbnails/papashotdoggeria.jpg');" data-genre="simulation">
+                    <h2>jules_verne</h2>
+                    <span class="pin-button"><img src="images/other/star.png" width="25px" height="25px"></span>
+                    <span class="download-button"><img src="images/other/download.png" width="25px" height="25px"></span>
+                </div>
+            </a>
+
+            <a target="_blank" href="jungle_jimmy/index.html">
+                <div class="button" style="background-image: url('images/thumbnails/paperio2.jpg');" data-genre="arcade">
+                    <h2>jungle_jimmy</h2>
+                    <span class="pin-button"><img src="images/other/star.png" width="25px" height="25px"></span>
+                </div>
+            </a>
+
+            <a target="_blank" href="jurassic_world/index.html">
+                <div class="button" style="background-image: url('images/thumbnails/superhot.jpg');" data-genre="adventure">
+                    <h2>jurassic_world</h2>
+                    <span class="pin-button"><img src="images/other/star.png" width="25px" height="25px"></span>
+                    <span class="download-button"><img src="images/other/download.png" width="25px" height="25px"></span>
+                </div>
+            </a>
+
+            <a target="_blank" href="just_married/index.html">
+                <div class="button" style="background-image: url('images/thumbnails/thebindingofisaac.jpg');" data-genre="adventure">
+                    <h2>just_married</h2>
+                    <span class="pin-button"><img src="images/other/star.png" width="25px" height="25px"></span>
+                    <span class="download-button"><img src="images/other/download.png" width="25px" height="25px"></span>
+                </div>
+            </a>
+
+            <a target="_blank" href="lasvegas/index.html">
+                <div class="button" style="background-image: url('images/thumbnails/townscaper.jpg');" data-genre="simulation">
+                    <h2>lasvegas</h2>
+                    <span class="pin-button"><img src="images/other/star.png" width="25px" height="25px"></span>
+                </div>
+            </a>
+
+            <a target="_blank" href="liberty_bell/index.html">
+                <div class="button" style="background-image: url('images/thumbnails/tunnelrush.jpg');" data-genre="arcade">
+                    <h2>liberty_bell</h2>
+                    <span class="pin-button"><img src="images/other/star.png" width="25px" height="25px"></span>
+                </div>
+            </a>
+
+            <a target="_blank" href="london/index.html">
+                <div class="button" style="background-image: url('images/thumbnails/themehotel.jpg');" data-genre="simulation">
+                    <h2>london</h2>
+                    <span class="pin-button"><img src="images/other/star.png" width="25px" height="25px"></span>
+                    <span class="download-button"><img src="images/other/download.png" width="25px" height="25px"></span>
+                </div>
+            </a>
+
+            <a target="_blank" href="lucky_luke/index.html">
+                <div class="button" style="background-image: url('images/thumbnails/escapingtheprison.jpg');" data-genre="adventure">
+                    <h2>lucky_luke</h2>
+                    <span class="pin-button"><img src="images/other/star.png" width="25px" height="25px"></span>
+                    <span class="download-button"><img src="images/other/download.png" width="25px" height="25px"></span>
+                </div>
+            </a>
+
+            <a target="_blank" href="luna_park/index.html">
+                <div class="button" style="background-image: url('images/thumbnails/stealingthediamond.jpg');" data-genre="adventure">
+                    <h2>luna_park</h2>
+                    <span class="pin-button"><img src="images/other/star.png" width="25px" height="25px"></span>
+                    <span class="download-button"><img src="images/other/download.png" width="25px" height="25px"></span>
+                </div>
+            </a>
+
+            <a target="_blank" href="mafia_boss/index.html">
+                <div class="button" style="background-image: url('images/thumbnails/infiltratingtheairship.jpg');" data-genre="adventure">
+                    <h2>mafia_boss</h2>
+                    <span class="pin-button"><img src="images/other/star.png" width="25px" height="25px"></span>
+                    <span class="download-button"><img src="images/other/download.png" width="25px" height="25px"></span>
+                </div>
+            </a>
+
+            <a target="_blank" href="mah_jong/index.html">
+                <div class="button" style="background-image: url('images/thumbnails/fleeingthecomplex.jpg');" data-genre="puzzle">
+                    <h2>mah_jong</h2>
+                    <span class="pin-button"><img src="images/other/star.png" width="25px" height="25px"></span>
+                    <span class="download-button"><img src="images/other/download.png" width="25px" height="25px"></span>
+                </div>
+            </a>
+
+            <a target="_blank" href="marilyn/index.html">
+                <div class="button" style="background-image: url('images/thumbnails/theimpossiblequiz.jpg');" data-genre="arcade">
+                    <h2>marilyn</h2>
+                    <span class="pin-button"><img src="images/other/star.png" width="25px" height="25px"></span>
+                    <span class="download-button"><img src="images/other/download.png" width="25px" height="25px"></span>
+                </div>
+            </a>
+
+            <a target="_blank" href="mont_blanc/index.html">
+                <div class="button" style="background-image: url('images/thumbnails/solitaire.jpg');" data-genre="puzzle">
+                    <h2>mont_blanc</h2>
+                    <span class="pin-button"><img src="images/other/star.png" width="25px" height="25px"></span>
+                    <span class="download-button"><img src="images/other/download.png" width="25px" height="25px"></span>
+                </div>
+            </a>
+
+            <a target="_blank" href="navy/index.html">
+                <div class="button" style="background-image: url('images/thumbnails/drifthunters.jpg');" data-genre="adventure">
+                    <h2>navy</h2>
+                    <span class="pin-button"><img src="images/other/star.png" width="25px" height="25px"></span>
+                </div>
+            </a>
+
+            <a target="_blank" href="new_year_eve/index.html">
+                <div class="button" style="background-image: url('images/thumbnails/vex6.jpg');" data-genre="platformer">
+                    <h2>new_year_eve</h2>
+                    <span class="pin-button"><img src="images/other/star.png" width="25px" height="25px"></span>
+                </div>
+            </a>
+
+            <a target="_blank" href="new_york/index.html">
+                <div class="button" style="background-image: url('images/thumbnails/amongus.jpg');" data-genre="arcade">
+                    <h2>new_york</h2>
+                    <span class="pin-button"><img src="images/other/star.png" width="25px" height="25px"></span>
+                </div>
+            </a>
+
+            <a target="_blank" href="numbers/index.html">
+                <div class="button" style="background-image: url('images/thumbnails/surf.jpg');" data-genre="puzzle">
+                    <h2>numbers</h2>
+                    <span class="pin-button"><img src="images/other/star.png" width="25px" height="25px"></span>
+                </div>
+            </a>
+
+            <a target="_blank" href="pantheon/index.html">
+                <div class="button" style="background-image: url('images/thumbnails/motox3m.jpeg');" data-genre="platformer">
+                    <h2>pantheon</h2>
+                    <span class="pin-button"><img src="images/other/star.png" width="25px" height="25px"></span>
+                </div>
+            </a>
+
+            <a target="_blank" href="paris/index.html">
+                <div class="button" style="background-image: url('images/thumbnails/fnaf.jpg');" data-genre="adventure">
+                    <h2>paris</h2>
+                    <span class="pin-button"><img src="images/other/star.png" width="25px" height="25px"></span>
+                    <span class="download-button"><img src="images/other/download.png" width="25px" height="25px"></span>
+                </div>
+            </a>
+
+            <a target="_blank" href="roulette_royale/index.html">
+                <div class="button" style="background-image: url('images/thumbnails/fnaf2.jpg');" data-genre="arcade">
+                    <h2>roulette_royale</h2>
+                    <span class="pin-button"><img src="images/other/star.png" width="25px" height="25px"></span>
+                </div>
+            </a>
+
+            <a target="_blank" href="roulette_silver/index.html">
+                <div class="button" style="background-image: url('images/thumbnails/fnaf2.jpg');" data-genre="arcade">
+                    <h2>roulette_silver</h2>
+                    <span class="pin-button"><img src="images/other/star.png" width="25px" height="25px"></span>
+                    <span class="download-button"><img src="images/other/download.png" width="25px" height="25px"></span>
+                </div>
+            </a>
+
+            <a target="_blank" href="royal_fruit/index.html">
+                <div class="button" style="background-image: url('images/thumbnails/fnaf3.jpg');" data-genre="arcade">
+                    <h2>royal_fruit</h2>
+                    <span class="pin-button"><img src="images/other/star.png" width="25px" height="25px"></span>
+                    <span class="download-button"><img src="images/other/download.png" width="25px" height="25px"></span>
+                </div>
+            </a>
+
+            <a target="_blank" href="rue_commerce/index.html">
+                <div class="button" style="background-image: url('images/thumbnails/fnaf4.jpg');" data-genre="simulation">
+                    <h2>rue_commerce</h2>
+                    <span class="pin-button"><img src="images/other/star.png" width="25px" height="25px"></span>
+                    <span class="download-button"><img src="images/other/download.png" width="25px" height="25px"></span>
+                </div>
+            </a>
+
+            <a target="_blank" href="safari/index.html">
+                <div class="button" style="background-image: url('images/thumbnails/riddleschool.jpg');" data-genre="adventure">
+                    <h2>safari</h2>
+                    <span class="pin-button"><img src="images/other/star.png" width="25px" height="25px"></span>
+                    <span class="download-button"><img src="images/other/download.png" width="25px" height="25px"></span>
+                </div>
+            </a>
+
+            <a target="_blank" href="sergent_pepper/index.html">
+                <div class="button" style="background-image: url('images/thumbnails/riddleschool2.jpg');" data-genre="adventure">
+                    <h2>sergent_pepper</h2>
+                    <span class="pin-button"><img src="images/other/star.png" width="25px" height="25px"></span>
+                    <span class="download-button"><img src="images/other/download.png" width="25px" height="25px"></span>
+                </div>
+            </a>
+
+            <a target="_blank" href="shinobi/index.html">
+                <div class="button" style="background-image: url('images/thumbnails/riddleschool3.jpg');" data-genre="arcade">
+                    <h2>shinobi</h2>
+                    <span class="pin-button"><img src="images/other/star.png" width="25px" height="25px"></span>
+                    <span class="download-button"><img src="images/other/download.png" width="25px" height="25px"></span>
+                </div>
+            </a>
+
+            <a target="_blank" href="ski_rush/index.html">
+                <div class="button" style="background-image: url('images/thumbnails/tunnelrush.jpg');" data-genre="arcade">
+                    <h2>ski_rush</h2>
+                    <span class="pin-button"><img src="images/other/star.png" width="25px" height="25px"></span>
+                </div>
+            </a>
+
+            <a target="_blank" href="small_life/index.html">
+                <div class="button" style="background-image: url('images/thumbnails/riddleschool4.jpg');" data-genre="puzzle">
+                    <h2>small_life</h2>
+                    <span class="pin-button"><img src="images/other/star.png" width="25px" height="25px"></span>
+                    <span class="download-button"><img src="images/other/download.png" width="25px" height="25px"></span>
+                </div>
+            </a>
+
+            <a target="_blank" href="snake_attack/index.html">
+                <div class="button" style="background-image: url('images/thumbnails/chromedino.jpg');" data-genre="arcade">
+                    <h2>snake_attack</h2>
+                    <span class="pin-button"><img src="images/other/star.png" width="25px" height="25px"></span>
+                </div>
+            </a>
+
+            <a target="_blank" href="space_runners/index.html">
+                <div class="button" style="background-image: url('images/thumbnails/riddleschool5.jpg');" data-genre="arcade">
+                    <h2>space_runners</h2>
+                    <span class="pin-button"><img src="images/other/star.png" width="25px" height="25px"></span>
+                    <span class="download-button"><img src="images/other/download.png" width="25px" height="25px"></span>
+                </div>
+            </a>
+
+            <a target="_blank" href="speed_rush_c2/index.html">
+                <div class="button" style="background-image: url('images/thumbnails/drifthunters.jpg');" data-genre="arcade">
+                    <h2>speed_rush_c2</h2>
+                    <span class="pin-button"><img src="images/other/star.png" width="25px" height="25px"></span>
+                </div>
+            </a>
+
+            <a target="_blank" href="super_heroes/index.html">
+                <div class="button" style="background-image: url('images/thumbnails/riddletransfer.jpg');" data-genre="adventure">
+                    <h2>super_heroes</h2>
+                    <span class="pin-button"><img src="images/other/star.png" width="25px" height="25px"></span>
+                    <span class="download-button"><img src="images/other/download.png" width="25px" height="25px"></span>
+                </div>
+            </a>
+
+            <a target="_blank" href="swing_jetpack/index.html">
+                <div class="button" style="background-image: url('images/thumbnails/jetpackjoyride.jpg');" data-genre="arcade">
+                    <h2>swing_jetpack</h2>
+                    <span class="pin-button"><img src="images/other/star.png" width="25px" height="25px"></span>
+                </div>
+            </a>
+
+            <a target="_blank" href="tokyo/index.html">
+                <div class="button" style="background-image: url('images/thumbnails/steakandjakemidnightmarch.jpg');" data-genre="platformer">
+                    <h2>tokyo</h2>
+                    <span class="pin-button"><img src="images/other/star.png" width="25px" height="25px"></span>
+                    <span class="download-button"><img src="images/other/download.png" width="25px" height="25px"></span>
+                </div>
+            </a>
+
+            <a target="_blank" href="virus_attack/index.html">
+                <div class="button" style="background-image: url('images/thumbnails/crossyroad.jpg');" data-genre="arcade">
+                    <h2>virus_attack</h2>
+                    <span class="pin-button"><img src="images/other/star.png" width="25px" height="25px"></span>
+                </div>
+            </a>
+
+            <a target="_blank" href="word_finder/index.html">
+                <div class="button" style="background-image: url('images/thumbnails/2048.jpg');" data-genre="puzzle">
+                    <h2>word_finder</h2>
+                    <span class="pin-button"><img src="images/other/star.png" width="25px" height="25px"></span>
+                </div>
+            </a>
+
+            <a target="_blank" href="world_cup/index.html">
+                <div class="button" style="background-image: url('images/thumbnails/steakandjakemidnightmarch.jpg');" data-genre="platformer">
+                    <h2>world_cup</h2>
+                    <span class="pin-button"><img src="images/other/star.png" width="25px" height="25px"></span>
+                    <span class="download-button"><img src="images/other/download.png" width="25px" height="25px"></span>
+                </div>
+            </a>
+
+            <a target="_blank" href="zap_aliens/index.html">
+                <div class="button" style="background-image: url('images/thumbnails/superhot.jpg');" data-genre="arcade">
+                    <h2>zap_aliens</h2>
+                    <span class="pin-button"><img src="images/other/star.png" width="25px" height="25px"></span>
+                </div>
+            </a>
+
+            <a target="_blank" href="zorro/index.html">
+                <div class="button" style="background-image: url('images/thumbnails/steakandjakemidnightmarch.jpg');" data-genre="platformer">
+                    <h2>zorro</h2>
+                    <span class="pin-button"><img src="images/other/star.png" width="25px" height="25px"></span>
+                    <span class="download-button"><img src="images/other/download.png" width="25px" height="25px"></span>
+                </div>
+            </a>
             
-            let filtered = games.filter(game => {
-                const matchesSearch = game.name.toLowerCase().includes(searchTerm) || game.folder.toLowerCase().includes(searchTerm);
-                const matchesCategory = currentCategory === 'all' || game.category === currentCategory;
-                const matchesFav = !showOnlyFavs || favorites.includes(game.folder);
-                return matchesSearch && matchesCategory && matchesFav;
-            });
+            <br>
+            <br>
+            <br>
+        </div>
+        <p> // all games playable on this website are complete copyright & property of their respective owners \\</p>
 
-            gameCounter.textContent = `Showing ${filtered.length} of ${games.length} games`;
-            favCountSpan.textContent = favorites.length;
-
-            if (filtered.length === 0) {
-                grid.innerHTML = `<div class="no-results">No games found matching your criteria.</div>`;
-                return;
-            }
-
-            grid.innerHTML = filtered.map(game => {
-                const isFav = favorites.includes(game.folder);
-                return `
-                    <a href="./${game.folder}/index.html" class="game-card">
-                        <div class="game-info">
-                            <h3>${game.name}</h3>
-                        </div>
-                        <div class="game-meta">
-                            <span class="game-badge">${game.category}</span>
-                            <button class="fav-btn ${isFav ? 'active' : ''}" onclick="toggleFavorite(event, '${game.folder}')" title="Favorite">
-                                ${isFav ? '⭐' : '☆'}
-                            </button>
-                        </div>
-                    </a>
-                `;
-            }).join('');
-        }
-
-        window.toggleFavorite = function(e, folder) {
-            e.preventDefault();
-            e.stopPropagation();
-            if (favorites.includes(folder)) {
-                favorites = favorites.filter(f => f !== folder);
-            } else {
-                favorites.push(folder);
-            }
-            localStorage.setItem('arcade_favorites', JSON.stringify(favorites));
-            renderGames();
-        };
-
-        searchInput.addEventListener('input', renderGames);
-
-        document.querySelectorAll('.category-chip').forEach(chip => {
-            chip.addEventListener('click', (e) => {
-                document.querySelectorAll('.category-chip').forEach(c => c.classList.remove('active'));
-                e.target.classList.add('active');
-                currentCategory = e.target.dataset.category;
-                renderGames();
-            });
-        });
-
-        favFilterBtn.addEventListener('click', () => {
-            showOnlyFavs = !showOnlyFavs;
-            favFilterBtn.style.background = showOnlyFavs ? 'var(--accent-color)' : 'var(--surface-hover)';
-            favFilterBtn.style.color = showOnlyFavs ? '#fff' : 'var(--text-primary)';
-            renderGames();
-        });
-
-        const themeToggle = document.getElementById('themeToggle');
-        const body = document.body;
-
-        themeToggle.addEventListener('click', () => {
-            const currentTheme = body.getAttribute('data-theme');
-            const newTheme = currentTheme === 'dark' ? 'light' : 'dark';
-            body.setAttribute('data-theme', newTheme);
-            themeToggle.textContent = newTheme === 'dark' ? '☀️' : '🌙';
-        });
-
-        renderGames();
-    </script>
-</body>
+        <br>
+        <script src="/storage/js/cloak.js"></script>
+        <script src="/storage/js/theme.js"></script>
+        <script src="/storage/js/cookie.js"></script>
+        <script src="/storage/js/games.js"></script>
+  </body>
 </html>
